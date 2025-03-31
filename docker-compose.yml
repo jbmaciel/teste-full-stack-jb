@@ -25,8 +25,8 @@ services:
       - ./frontend:/project
       - /project/node_modules
     ports:
-          - "4200:4200"
-    command: "ng serve --host=0.0.0.0"
+          - "80:4200"
+    command: "ng serve --host 0.0.0.0 --poll=2000 --port 4200 --disable-host-check"
   db:
     image: mysql:5.7
     container_name: mysql_db

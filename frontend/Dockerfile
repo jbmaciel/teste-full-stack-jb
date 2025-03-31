@@ -10,7 +10,7 @@ RUN npm install -g @angular/cli@17
 
 # Copiar arquivos de dependência e instalar pacotes
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm i
 
 # Copiar restante dos arquivos
 COPY . .
@@ -19,4 +19,5 @@ COPY . .
 EXPOSE 4200
 
 # Comando para iniciar o servidor
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+CMD ["ng", "serve", "--host", "0.0.0.0", "--poll=2000", "--port", "4200", "--disable-host-check"]
+
