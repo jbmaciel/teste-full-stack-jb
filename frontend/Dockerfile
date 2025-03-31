@@ -10,7 +10,7 @@ RUN npm install -g @angular/cli@17
 
 # Copiar arquivos de dependência e instalar pacotes
 COPY package.json package-lock.json ./
-RUN npm i
+RUN npm i --force
 
 # Copiar restante dos arquivos
 COPY . .
