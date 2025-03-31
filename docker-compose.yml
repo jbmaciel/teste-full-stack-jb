@@ -1,0 +1,44 @@
+services: 
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: laravel_5_4_api
+    working_dir: /var/www
+    volumes:
+    - ./backend:/var/www
+    - ./backend/storage/logs:/var/www/storage/logs
+    ports:
+    - "8000:8000"
+    command: php artisan serve --host=0.0.0.0 --port=8000
+    env_file:
+      - .env
+    networks:
+      - app_network
+  frontend:
+    build: ./frontend
+    container_name: angular_17_app
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "4200:4200"
+    command: ["npm", "run", "start"]
+  db:
+    image: mysql:5.7
+    container_name: mysql_db
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - dbdata:/var/lib/mysql
+    ports:
+    - "3306:3306"
+    networks:
+      - app_network
+    command: --default-storage-engine=INNODB --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+volumes:
+  dbdata:
+networks:
+  app_network:
+    driver: bridge
