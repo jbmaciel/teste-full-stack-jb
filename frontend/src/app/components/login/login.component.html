@@ -5,7 +5,7 @@
       <div>
         <label for="email" class="block text-sm font-medium">E-mail</label>
         <input id="email" type="email" formControlName="email" class="input input-bordered w-full" placeholder="Digite seu e-mail" />
-        <div *ngIf="email?.invalid && email?.touched" class="text-red-500 text-sm">
+        <div *ngIf="submitted && email?.invalid" class="text-red-500 text-sm">
           <span *ngIf="email?.errors?.['required']">E-mail é obrigatório.</span>
           <span *ngIf="email?.errors?.['email']">E-mail inválido.</span>
         </div>
@@ -14,7 +14,7 @@
         <label for="password" class="block text-sm font-medium">Senha</label>
         <input id="password" type="password" formControlName="password" class="input input-bordered w-full"
           placeholder="Digite sua senha" />
-        <div *ngIf="password?.invalid && password?.touched" class="text-red-500 text-sm">
+        <div *ngIf="submitted && password?.invalid" class="text-red-500 text-sm">
           <span *ngIf="password?.errors?.['required']">Senha é obrigatória.</span>
         </div>
       </div>

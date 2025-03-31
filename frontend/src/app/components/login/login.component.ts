@@ -12,7 +12,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 export class LoginComponent {
   loginForm: FormGroup;
   errorMessage: string | null = null;
-  formSubmited = false;
+  submitted = false; // Indica se o usuário já tentou enviar o formulário
 
   constructor(private fb: FormBuilder) {
     this.loginForm = this.fb.group({
@@ -30,7 +30,7 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    this.formSubmited = true;
+    this.submitted = true; // Marca que o formulário foi enviado ao menos uma vez
 
     if (this.loginForm.valid) {
       this.errorMessage = null;
