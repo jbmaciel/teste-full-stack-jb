@@ -11,7 +11,7 @@ export class AuthService {
     if (email === this.validUser.email && password === this.validUser.password) {
       return of({ success: true }).pipe(delay(5000)); // Simula requisição assíncrona
     } else {
-      return throwError(() => new Error('Email ou senha inválidos')).pipe(delay(1000));
+      return throwError(() => new Error('Senha ou usuário incorretos, revise suas credenciais!')).pipe(delay(1000));
     }
   }
 }

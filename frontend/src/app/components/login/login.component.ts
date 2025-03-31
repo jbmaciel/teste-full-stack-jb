@@ -15,12 +15,19 @@ export class LoginComponent {
   errorMessage: string | null = null;
   submitted = false; // Indica se o usuário já tentou enviar o formulário
   loading = false; // Indica se o formulário está sendo enviado | Usaremos para exibir um indicador de carregamento.
+  showPassword = false; // Indica se a senha deve ser exibida em texto claro ou não
+  loginFailed = false; // Flag para erro de login
+
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 
   get email() {
@@ -32,7 +39,8 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    this.submitted = true; // Marca que o formulário foi enviado ao menos uma vez
+    this.submitted = !this.submitted; // Marca que o formulário foi enviado ao menos uma vez
+    this.loginFailed = false; // Resetando erro de login antes da tentativa
 
     if (this.loginForm.valid) {
       this.loading = true; // Inicia o carregamento
@@ -49,11 +57,12 @@ export class LoginComponent {
         error: (error) => {
           this.errorMessage = error.message;
           this.loading = false;
+          this.loginFailed = true; // Marca erro para exibir feedback nos campos
         }
       });
     }
     else {
-      this.errorMessage = 'Por favor, corrija os erros no formulário.';
+      this.errorMessage = 'Dados incorretos. Por favor, revise seus dados e tente novamente';
     }
   }
 }

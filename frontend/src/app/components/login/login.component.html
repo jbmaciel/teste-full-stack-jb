@@ -1,30 +1,34 @@
 <div class="flex items-center justify-center min-h-screen bg-base-300">
-  <div class="w-full max-w-md p-6 rounded-2xl shadow-md bg-base-100">
+  <div class="w-full max-w-md p-10 rounded-3xl shadow-md bg-base-100">
     <h2 class="text-2xl font-bold text-left mb-6">Login</h2>
-    <form class="space-y-4" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form class="space-y-8" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div *ngIf="errorMessage" class="text-red-500 text-left mt-2">
+        {{ errorMessage }}
+      </div>
       <div>
-        <label for="email" class="block text-sm font-medium">E-mail</label>
-        <input id="email" type="email" formControlName="email" class="input input-bordered w-full" placeholder="Digite seu e-mail" />
+        <input id="email" type="email" formControlName="email" class="input input-bordered w-full"
+          [ngClass]="{ 'input-error': (email?.errors && submitted) || loginFailed }" placeholder="E-mail" />
         <div *ngIf="submitted && email?.invalid" class="text-red-500 text-sm">
-          <span *ngIf="email?.errors?.['required']">E-mail é obrigatório.</span>
-          <span *ngIf="email?.errors?.['email']">E-mail inválido.</span>
+          <span *ngIf="email?.errors?.['required']">Por favor, digite seu usuário (e-mail de cadastro)!</span>
+          <span *ngIf="email?.errors?.['email']">Digite um e-mail válido</span>
         </div>
       </div>
       <div>
-        <label for="password" class="block text-sm font-medium">Senha</label>
-        <input id="password" type="password" formControlName="password" class="input input-bordered w-full"
-          placeholder="Digite sua senha" />
+        <label class="input w-full" [ngClass]="{ 'input-error': (password?.invalid && submitted) || loginFailed }">
+          <input id="password" type="password" formControlName="password" [type]="showPassword ? 'text' : 'password'"
+             [ngClass]="{ 'input-error': (password?.invalid && submitted) || loginFailed }" placeholder="Senha" />
+          <button type="button" (click)="togglePassword()">
+            {{ showPassword ? '🙈' : '👁' }}
+          </button>
+        </label>
         <div *ngIf="submitted && password?.invalid" class="text-red-500 text-sm">
-          <span *ngIf="password?.errors?.['required']">Senha é obrigatória.</span>
+          <span *ngIf="password?.errors?.['required']">Digite uma senha</span>
         </div>
       </div>
       <button type="submit" class="btn btn-secondary w-full" [disabled]="loading">
-        <span *ngIf="!loading">Entrar</span>
+        <span *ngIf="!loading">ENTRAR</span>
         <span *ngIf="loading" class="loading loading-spinner loading-sm"></span>
       </button>
-      <div *ngIf="errorMessage" class="text-red-500 text-center mt-2">
-        {{ errorMessage }}
-      </div>
     </form>
   </div>
 </div>
