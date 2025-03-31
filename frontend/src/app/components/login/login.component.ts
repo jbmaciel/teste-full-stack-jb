@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,8 +14,9 @@ export class LoginComponent {
   loginForm: FormGroup;
   errorMessage: string | null = null;
   submitted = false; // Indica se o usuário já tentou enviar o formulário
+  loading = false; // Indica se o formulário está sendo enviado | Usaremos para exibir um indicador de carregamento.
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -33,17 +35,22 @@ export class LoginComponent {
     this.submitted = true; // Marca que o formulário foi enviado ao menos uma vez
 
     if (this.loginForm.valid) {
+      this.loading = true; // Inicia o carregamento
       this.errorMessage = null;
       console.log('Enviando credenciais:', this.loginForm.value);
 
       // Simulação de autenticação
       const { email, password } = this.loginForm.value;
-      if (email === 'usuario@email.com' && password === '123456') {
-        console.log('Login bem-sucedido!');
-        return;
-      } else {
-        this.errorMessage = 'Email ou senha inválidos.';
-      }
+      this.authService.login(email, password).subscribe({
+        next: () => {
+          console.log('Login bem-sucedido!');
+          this.loading = false; // Finaliza o carregamento
+        },
+        error: (error) => {
+          this.errorMessage = error.message;
+          this.loading = false;
+        }
+      });
     }
     else {
       this.errorMessage = 'Por favor, corrija os erros no formulário.';
