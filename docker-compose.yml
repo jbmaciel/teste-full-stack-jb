@@ -16,14 +16,17 @@ services:
     networks:
       - app_network
   frontend:
-    build: ./frontend
+    build:
+      context: frontend
+      target: builder
     container_name: angular_17_app
-    working_dir: /app
+    working_dir: /project
     volumes:
-      - ./frontend:/app
+      - ./frontend:/project
+      - /project/node_modules
     ports:
-      - "4200:4200"
-    command: ["npm", "run", "start"]
+          - "4200:4200"
+    command: "ng serve --host=0.0.0.0"
   db:
     image: mysql:5.7
     container_name: mysql_db

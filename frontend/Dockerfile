@@ -1,12 +1,22 @@
-FROM node:18-alpine
+# Usar uma versão estável do Node.js LTS
+FROM --platform=$BUILDPLATFORM node:20-bullseye-slim as builder
 
-WORKDIR /app
+# Criar diretório de trabalho
+RUN mkdir /project
+WORKDIR /project
 
-COPY package*.json ./
+# Instalar Angular CLI na versão correta
+RUN npm install -g @angular/cli@17
 
-RUN npm ci --only=development
+# Copiar arquivos de dependência e instalar pacotes
+COPY package.json package-lock.json ./
+RUN npm ci
 
-
+# Copiar restante dos arquivos
 COPY . .
 
-CMD ["npm", "start"]
+# Expor a porta do Angular
+EXPOSE 4200
+
+# Comando para iniciar o servidor
+CMD ["ng", "serve", "--host", "0.0.0.0"]
