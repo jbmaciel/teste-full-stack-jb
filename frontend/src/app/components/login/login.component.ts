@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -19,11 +20,18 @@ export class LoginComponent {
   loginFailed = false; // Flag para erro de login
 
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
+  }
+
+  ngOnInit(): void {
+    // Verifica se o usuário já está autenticado
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/dashboard']); // Redireciona para o dashboard
+    }
   }
 
   togglePassword() {
@@ -39,13 +47,12 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    this.submitted = !this.submitted; // Marca que o formulário foi enviado ao menos uma vez
+    this.submitted = true; // Marca que o formulário foi enviado ao menos uma vez
     this.loginFailed = false; // Resetando erro de login antes da tentativa
 
     if (this.loginForm.valid) {
       this.loading = true; // Inicia o carregamento
       this.errorMessage = null;
-      console.log('Enviando credenciais:', this.loginForm.value);
 
       // Simulação de autenticação
       const { email, password } = this.loginForm.value;
@@ -53,6 +60,8 @@ export class LoginComponent {
         next: () => {
           console.log('Login bem-sucedido!');
           this.loading = false; // Finaliza o carregamento
+          this.authService.loadUser();
+          this.router.navigate(['/dashboard']); // Redireciona para a página inicial após o login
         },
         error: (error) => {
           this.errorMessage = error.message;
