@@ -62,7 +62,7 @@ export class LoginComponent {
       });
     }
     else {
-      this.errorMessage = 'Dados incorretos. Por favor, revise seus dados e tente novamente';
+      this.errorMessage = 'Dados incorretos. Por favor, revise seus dados e tente novamente.';
     }
   }
 }
