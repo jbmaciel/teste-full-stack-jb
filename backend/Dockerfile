@@ -2,7 +2,7 @@ FROM php:7.0-fpm-alpine
 
 # Instalando dependências
 RUN apk update && apk add --no-cache \
-    zip unzip curl git libpng-dev libxml2-dev oniguruma-dev libmcrypt-dev
+    zip unzip nodejs npm curl git libpng-dev libxml2-dev oniguruma-dev libmcrypt-dev
 
 # Instalando extensões PHP
 RUN docker-php-ext-install pdo pdo_mysql mbstring mcrypt gd
@@ -24,5 +24,11 @@ COPY . .
 RUN chmod -R 775 storage bootstrap/cache
 
 RUN composer install --no-interaction --optimize-autoloader
+
+# Instalar as dependências do Node.js (compilar os assets)
+RUN npm install
+
+# Compilar os assets
+RUN npm run dev
 
 CMD ["php-fpm"]
