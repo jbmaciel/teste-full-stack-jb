@@ -57,8 +57,47 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     const token = localStorage.getItem('access_token');
-    return !!token; // Retorna verdadeiro se o token existir
+    if (!token) return false;
 
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const isExpired = payload.exp * 1000 < Date.now(); // Verifica se o token está expirado
+      return !isExpired;
+    } catch (error) {
+      console.error('Erro ao verificar o token:', error);
+      return false;
+    }
+
+  }
+
+  refreshToken(): Observable<any> {
+    const refreshToken = localStorage.getItem('refresh_token');
+    if (!refreshToken) {
+      return throwError(() => new Error('Refresh token não encontrado'));
+    }
+
+    return this.http.post<{ access_token: string, refresh_token: string }>(
+      `${this.apiUrl}/oauth/token`,
+      {
+        grant_type: 'refresh_token',
+        client_id: this.client_id,
+        client_secret: this.client_secret,
+        refresh_token: refreshToken
+      }
+    ).pipe(
+      tap(response => {
+        localStorage.setItem('access_token', response.access_token);
+        localStorage.setItem('refresh_token', response.refresh_token);
+      }),
+      catchError(error => {
+        console.error('Erro ao atualizar o token:', error);
+        if (error.status === 401) {
+          this.logout(); // Logout se o refresh token não for válido
+          return throwError(() => new Error('Sessão expirada. Faça login novamente.'));
+        }
+        return throwError(() => new Error('Erro ao atualizar o token.'));
+      })
+    );
   }
 
   logout() {
