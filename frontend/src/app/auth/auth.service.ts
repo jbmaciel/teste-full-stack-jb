@@ -40,7 +40,8 @@ export class AuthService {
         if (error.status === 401) {
           return throwError(() => new Error('Senha ou usuário incorretos, revise suas credenciais!'));
         }
-        return throwError(() => new Error('Ops.. Algo não está funcionando por aqui! Tente novamente mais tarde!'));
+        return throwError(() => new Error('Senha ou usuário incorretos, revise suas credenciais!'));
+        // return throwError(() => new Error('Ops.. Algo não está funcionando por aqui! Tente novamente mais tarde!'));
       })
     );
   }
@@ -72,6 +73,7 @@ export class AuthService {
 
   refreshToken(): Observable<any> {
     const refreshToken = localStorage.getItem('refresh_token');
+    
     if (!refreshToken) {
       return throwError(() => new Error('Refresh token não encontrado'));
     }
