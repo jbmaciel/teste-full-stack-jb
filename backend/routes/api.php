@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\EntityController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +18,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resource('entidades', 'Api\EntityController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+
+Route::resource('regionais', 'Api\RegionalController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
