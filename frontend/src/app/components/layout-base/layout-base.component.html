@@ -12,7 +12,12 @@
   </aside>
 
   <!-- Conteúdo Principal -->
-  <main class="flex-1 p-6">
+  <main class="flex-1">
+    <div class="navbar bg-gray-700 text-neutral-content px-8 mb-8">
+      <div *ngIf="user">
+        Bem-vindo, {{ user.name }}!
+      </div>
+    </div>
     <router-outlet></router-outlet>
   </main>
 </div>
