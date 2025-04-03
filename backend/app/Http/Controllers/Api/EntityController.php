@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Entity;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreEntityRequest;
+use App\Http\Requests\UpdateEntityRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 
 class EntityController extends Controller
@@ -14,9 +17,28 @@ class EntityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $entities = Entity::all();
+        $query = Entity::with('regional');
+
+        // Aplicar filtro se existir
+
+        if ($request->has('filter') && !empty($request->filter)) {
+            $query->where('nome_fantasia', 'like', '%' . $request->filter . '%')
+                ->orWhere('razao_social', 'like', '%' . $request->filter . '%')
+                ->orWhereHas('regional', function ($q) use ($request) {
+                    $q->where('nome', 'like', '%' . $request->filter . '%');
+                });
+        }
+
+        // Aplicar ordenação se existir
+        $sortBy = $request->get('sortBy', 'id');
+        $order = $request->get('order', 'asc');
+
+        $query->orderBy($sortBy, $order);
+
+        $entities = $query->paginate(10);
+
         // Retornando todas as entidades, em json.
         return response()->json($entities);
     }
@@ -27,36 +49,10 @@ class EntityController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreEntityRequest $request)
     {
-        
-        // Definindo regras de validação
-        $validator = Validator::make($request->all(), [
-            'razao_social' => 'required|string|max:255',
-            'nome_fantasia' => 'required|string|max:255',
-            'cnpj' => 'required|string|unique:entities,cnpj|max:14',
-            'regional' => 'required',
-            'data_inauguracao' => 'required|date',
-            'ativa' => 'boolean',
-            'especialidades_medicas' => 'array'
-        ]);
 
-
-        // Verificando se a validação falhou
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        }
-
-        // Criando a entidade
-        $entidade = Entity::create([
-            'razao_social' => $request->razao_social,
-            'nome_fantasia' => $request->nome_fantasia,
-            'cnpj' => $request->cnpj,
-            'regional' => $request->regional,
-            'data_inauguracao' => $request->data_inauguracao,
-            'ativa' => $request->ativa ?? true,
-            'especialidades_medicas' => $request->especialidades_medicas ?? '[]',
-        ]);
+        $entidade = Entity::create($request->validated());
 
         return response()->json($entidade, 201);
     }
@@ -86,37 +82,16 @@ class EntityController extends Controller
      * @param  \App\Entity  $entity
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateEntityRequest $request, string $id): JsonResponse
     {
+
         $entidade = Entity::find($id);
 
         if (!$entidade) {
             return response()->json(['message' => 'Entidade não encontrada'], 404);
         }
 
-        $validator = Validator::make($request->all(), [
-            'razao_social' => 'required|string|max:255',
-            'nome_fantasia' => 'required|string|max:255',
-            'cnpj' => 'required|string|unique:entities,cnpj|max:14',
-            'regional' => 'required',
-            'data_inauguracao' => 'required|date',
-            'ativa' => 'boolean',
-            'especialidades_medicas' => 'array'
-        ]);
-
-        if($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        }
-
-        $entidade->update([
-            'razao_social' => $request->razao_social,
-            'nome_fantasia' => $request->nome_fantasia,
-            'cnpj' => $request->cnpj,
-            'regional' => $request->regional,
-            'data_inauguracao' => $request->data_inauguracao,
-            'ativa' => 'boolean',
-            'especialidades_medicas' => 'array'
-        ]);
+        $entidade->update($request->all());
 
         return response()->json($entidade);
     }
@@ -130,7 +105,7 @@ class EntityController extends Controller
     {
         $entidade = Entity::find($id);
 
-        if(!$entidade) {
+        if (!$entidade) {
             return response()->json(['message' => 'Entidade não encontrada'], 404);
         }
 

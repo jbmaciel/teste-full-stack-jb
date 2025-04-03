@@ -1,4 +1,4 @@
-p<?php
+<?php
 
 namespace App;
 
@@ -12,4 +12,10 @@ class Regional extends Model
     protected $keyType = 'string'; // Definindo o tipo da chave primária como string
     
     protected $fillable = ['id', 'nome']; 
+
+    public function entidades()
+    {
+        return $this->belongsToMany(Entity::class);
+    }
+
 }
