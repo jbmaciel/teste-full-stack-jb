@@ -1,14 +1,39 @@
 <div class="flex h-screen bg-gray-100">
   <!-- Menu Lateral -->
-  <aside class="w-64 bg-gray-800 text-white flex flex-col">
-    <img class="p-4" src="https://www.amorsaude.com.br/wp-content/themes/amorsaude/assets/images/amorsaude-logo.svg" />
+  <aside
+    class="bg-gray-800 text-white flex flex-col transition-all duration-300"
+    [ngClass]="{ 'w-64': menuAberto, 'w-16': !menuAberto }">
+
+    <button
+      class="p-4 focus:outline-none"
+      (click)="menuAberto = !menuAberto">
+      ☰
+    </button>
+
+    <img
+      class="p-4 transition-all duration-300"
+      [ngClass]="{ 'hidden': !menuAberto, 'block': menuAberto }"
+      src="https://www.amorsaude.com.br/wp-content/themes/amorsaude/assets/images/amorsaude-logo.svg"
+    />
+
     <nav class="flex-1">
       <ul>
-        <li><a routerLink="dashboard" class="block p-4 hover:bg-gray-700">Dashboard</a></li>
-        <li><a routerLink="entidades" class="block p-4 hover:bg-gray-700">Entidades</a></li>
+        <li>
+          <a routerLink="dashboard" class="block p-4 hover:bg-gray-700">
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a routerLink="entidades" class="block p-4 hover:bg-gray-700">
+            Entidades
+          </a>
+        </li>
       </ul>
     </nav>
-    <button (click)="logout()" class="p-4 bg-red-600 hover:bg-red-700">Sair</button>
+
+    <button (click)="logout()" class="p-4 bg-red-600 hover:bg-red-700">
+      Sair
+    </button>
   </aside>
 
   <!-- Conteúdo Principal -->

@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 })
 export class LayoutBaseComponent {
   user: any;
+  menuAberto: boolean = true;
+
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
@@ -20,7 +22,7 @@ export class LayoutBaseComponent {
       });
   }
 
-  
+
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);

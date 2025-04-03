@@ -17,7 +17,7 @@
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
       </svg>
-      
+
     </button>
   </label>
 
@@ -25,7 +25,7 @@
     <table class="table w-full">
       <thead>
         <tr>
-          <th (click)="ordenar('nome_fantasia')" class="cursor-pointer">
+          <th (click)="ordenar('nome_fantasia')" class="cursor-pointer whitespace-nowrap">
             <div class="flex">
               Nome
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -35,7 +35,7 @@
               </svg>
             </div>
           </th>
-          <th (click)="ordenar('regiao')" class="cursor-pointer">
+          <th (click)="ordenar('regional')" class="cursor-pointer hidden md:table-cell">
             <div class="flex">
               Região
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -45,19 +45,19 @@
               </svg>
             </div>
           </th>
-          <th>Especialidades</th>
-          <th>Ativa</th>
+          <th class="hidden lg:table-cell">Especialidades</th>
+          <th class="hidden sm:table-cell">Ativa</th>
           <th>Ações</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let entidade of entidades">
           <td>{{ entidade.nome_fantasia }}</td>
-          <td>{{ entidade.regional.nome }}</td>
-          <td>
-            <div *ngFor="let especialidade of entidade.medical_specialties" class="badge badge-soft badge-primary m-1">{{ especialidade.nome }}</div>
+          <td class="hidden md:table-cell">{{ entidade.regional.nome }}</td>
+          <td class="hidden lg:table-cell">
+            <div *ngFor="let especialidade of entidade.medical_specialties" class="badge badge-soft badge-primary m-1 text-xs">{{ especialidade.nome }}</div>
           </td>
-          <td>
+          <td class="hidden sm:table-cell">
             <svg *ngIf="entidade.ativa" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
               stroke-width="1.5" stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
