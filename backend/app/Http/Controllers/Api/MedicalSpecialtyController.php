@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\MedicalSpecialties;
+use App\MedicalSpecialty;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,7 +17,7 @@ class MedicalSpecialtyController extends Controller
      */
     public function index()
     {
-        $medical_specialties = MedicalSpecialties::all();
+        $medical_specialties = MedicalSpecialty::all();
 
         return response()->json($medical_specialties);
     }
@@ -39,7 +39,7 @@ class MedicalSpecialtyController extends Controller
             return response()->json(['errors' => $validator->errors()], 400);
         }
 
-        $medical_specialties = MedicalSpecialties::create([
+        $medical_specialties = MedicalSpecialty::create([
             'nome' => $request->nome,
         ]);
 
@@ -53,7 +53,7 @@ class MedicalSpecialtyController extends Controller
      */
     public function show($id)
     {
-        $medical_specialtie = MedicalSpecialties::find($id);
+        $medical_specialtie = MedicalSpecialty::find($id);
 
         if (!$medical_specialtie) {
             return response()->json(['message' => 'Especialidade não encontrada'], 404);
@@ -69,7 +69,7 @@ class MedicalSpecialtyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $medical_specialtie = MedicalSpecialties::find($id);
+        $medical_specialtie = MedicalSpecialty::find($id);
 
         if (!$medical_specialtie) {
             return response()->json(['message' => 'Especialidade não encontrada'], 404);
@@ -97,7 +97,7 @@ class MedicalSpecialtyController extends Controller
      */
     public function destroy($id)
     {
-        $medical_specialtie = MedicalSpecialties::find($id);
+        $medical_specialtie = MedicalSpecialty::find($id);
 
         if (!$medical_specialtie) {
             return response()->json(['message' => 'Especialidade não encontrada'], 404);

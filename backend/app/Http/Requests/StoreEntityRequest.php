@@ -29,8 +29,9 @@ class StoreEntityRequest extends FormRequest
             'cnpj' => 'required|string|max:14|unique:entities,cnpj',
             'regional' => 'required|string|exists:regionals,id',
             'data_inauguracao' => 'required|date',
-            'ativa' => 'boolean',
+            'ativa' => 'required|in:true,false,1,0,"1","0"',
             'especialidades_medicas' => 'array',
+            'especialidades_medicas.*' => 'exists:medical_specialties,id',
         ];
     }
 }

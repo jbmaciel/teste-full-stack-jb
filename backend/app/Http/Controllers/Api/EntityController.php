@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEntityRequest;
 use App\Http\Requests\UpdateEntityRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class EntityController extends Controller
@@ -19,7 +20,7 @@ class EntityController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Entity::with('regional');
+        $query = Entity::with('regional')->with('medicalSpecialties');
 
         // Aplicar filtro se existir
 
@@ -51,8 +52,19 @@ class EntityController extends Controller
      */
     public function store(StoreEntityRequest $request)
     {
+        $validatedData = $request->all();
 
-        $entidade = Entity::create($request->validated());
+        // Convertendo 'ativa' para booleano e depois para inteiro (0 ou 1)
+        $validatedData['ativa'] = filter_var($validatedData['ativa'], FILTER_VALIDATE_BOOLEAN) ? 1 : 0;
+
+
+        $entidade = Entity::create($validatedData);
+
+
+        // Associando especialidades médicas, se houver
+        if (!empty($request->especialidades_medicas)) {
+            $entidade->medicalSpecialties()->sync($request->especialidades_medicas);
+        }
 
         return response()->json($entidade, 201);
     }
@@ -65,7 +77,8 @@ class EntityController extends Controller
      */
     public function show($id)
     {
-        $entidade = Entity::find($id);
+        $entidade = Entity::with('medicalSpecialties')->find($id);
+        // Article::with('category')->get()->find($ids);
 
         if (!$entidade) {
             return response()->json(['message' => 'Entidade não encontrada'], 404);
@@ -92,6 +105,11 @@ class EntityController extends Controller
         }
 
         $entidade->update($request->all());
+
+        // Associando especialidades médicas, se houver
+        if (!empty($request->especialidades_medicas)) {
+            $entidade->medicalSpecialties()->sync($request->especialidades_medicas);
+        }
 
         return response()->json($entidade);
     }

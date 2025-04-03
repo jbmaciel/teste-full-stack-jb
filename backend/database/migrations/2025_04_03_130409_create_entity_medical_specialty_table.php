@@ -17,6 +17,7 @@ class CreateEntityMedicalSpecialtyTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('entity_id');
             $table->unsignedInteger('medical_specialty_id');
+            
             $table->foreign('entity_id')->references('id')->on('entities')->onDelete('cascade');
             $table->foreign('medical_specialty_id')->references('id')->on('medical_specialties')->onDelete('cascade');
             $table->timestamps();

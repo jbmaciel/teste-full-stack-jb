@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Entity extends Model
 {
     protected $fillable = [
-        'razao_social', 'nome_fantasia', 'cnpj', 'regional', 'data_inauguracao', 'ativa', 'especialidades_medicas'
+        'razao_social',
+        'nome_fantasia',
+        'cnpj',
+        'regional',
+        'data_inauguracao',
+        'ativa'
     ];
 
     protected $casts = [
@@ -21,7 +26,8 @@ class Entity extends Model
         return $this->belongsTo(Regional::class, 'regional', 'id');
     }
 
-    public function medicalSpecialties() {
-        return $this->belongsToMany(MedicalSpecialties::class, 'entity_medical_specialty');
+    public function medicalSpecialties()
+    {
+        return $this->belongsToMany(MedicalSpecialty::class, 'entity_medical_specialty', 'entity_id', 'medical_specialty_id');
     }
 }

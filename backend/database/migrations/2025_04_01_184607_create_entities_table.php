@@ -22,7 +22,6 @@ class CreateEntitiesTable extends Migration
             $table->uuid('regional');
             $table->date('data_inauguracao');
             $table->boolean('ativa')->default(true);
-            $table->json('especialidades_medicas')->nullable();
             $table->timestamps();
         });
     }

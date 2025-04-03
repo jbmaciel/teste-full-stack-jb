@@ -26,11 +26,12 @@ class UpdateEntityRequest extends FormRequest
         return [
             'razao_social' => 'sometimes|required|string|max:255',
             'nome_fantasia' => 'sometimes|string|max:255',
-            'cnpj' => 'sometimes|string|max:14|unique:entities,cnpj',
+            'cnpj' => 'sometimes|string|max:14',
             'regional' => 'sometimes|string|exists:regionals,id',
             'data_inauguracao' => 'sometimes|date',
-            'ativa' => 'sometimes|boolean',
-            'especialidades_medicas' => 'sometimes|array',
+            'ativa' => 'sometimes|in:true,false,1,0,"1","0"',
+            'especialidades_medicas' => 'array',
+            'especialidades_medicas.*' => 'exists:medical_specialties,id',
         ];
     }
 }
