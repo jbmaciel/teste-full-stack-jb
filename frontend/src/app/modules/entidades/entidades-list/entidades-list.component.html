@@ -2,7 +2,7 @@
   <!-- Título de botão de criação -->
   <div class="flex justify-between items-center mb-4">
     <h1 class="text-2xl font-bold">Entidades</h1>
-    <button class="btn btn-primary">Nova Entidade</button>
+    <button (click)="criarEntidade()" class="btn btn-primary">Nova Entidade</button>
   </div>
 
   <label class="mb-4 input input-bordered w-full">
@@ -17,7 +17,7 @@
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
       </svg>
-
+      
     </button>
   </label>
 
@@ -54,7 +54,9 @@
         <tr *ngFor="let entidade of entidades">
           <td>{{ entidade.nome_fantasia }}</td>
           <td>{{ entidade.regional.nome }}</td>
-          <td>{{ entidade.especialidades_medicas }}</td>
+          <td>
+            <div *ngFor="let especialidade of entidade.medical_specialties" class="badge badge-soft badge-primary m-1">{{ especialidade.nome }}</div>
+          </td>
           <td>
             <svg *ngIf="entidade.ativa" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
               stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -68,7 +70,7 @@
 
           </td>
           <td class="flex gap-2">
-            <button class="btn btn-sm btn-info" (click)="visualizar(entidade.id)">
+            <button class="btn btn-sm btn-info" (click)="visualizarEntidade(entidade.id)">
               <span>Visualizar</span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="size-6">
@@ -77,7 +79,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
               </svg>
             </button>
-            <button class="btn btn-sm btn-warning" (click)="editar(entidade.id)">
+            <button class="btn btn-sm btn-warning" (click)="editarEntidade(entidade.id)">
               <span>Editar</span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="size-6">

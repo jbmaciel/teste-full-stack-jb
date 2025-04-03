@@ -31,7 +31,7 @@ export class EntidadesListComponent implements OnInit {
 
     // Configurar debounce para busca
     this.filtroSubject.pipe(
-      debounceTime(500),
+      debounceTime(1000),
       distinctUntilChanged(),
       switchMap(filtro => {
         if (this.ultimaBusca.value === filtro) {
@@ -87,11 +87,15 @@ export class EntidadesListComponent implements OnInit {
     this.carregarEntidades();
   }
 
-  visualizar(id: number) {
+  visualizarEntidade(id: number) {
     this.router.navigate(['/entidades', id]);
   }
 
-  editar(id: number) {
+  editarEntidade(id: number) {
     this.router.navigate(['/entidades', id, 'editar']);
+  }
+
+  criarEntidade() {
+    this.router.navigate(['/entidades/criar']);
   }
 }

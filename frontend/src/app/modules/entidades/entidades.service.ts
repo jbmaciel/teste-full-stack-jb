@@ -8,6 +8,7 @@ import { Paginacao } from '../../interfaces/paginacao.interface';
 })
 export class EntidadesService {
   private apiUrl = 'http://localhost:8000/api/entidades';
+  private apiUrlBase = 'http://localhost:8000/api';
 
   constructor(private http: HttpClient) { }
 
@@ -23,5 +24,26 @@ export class EntidadesService {
     .set('sortBy', colunaOrdenacao)
     .set('order', ordem);
     return this.http.get<Paginacao>(this.apiUrl, { params})
+  }
+
+  getEntidadeById(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}`);
+  }
+
+  createEntidade(entidade:any): Observable<any> {
+    console.log(entidade);
+    return this.http.post(this.apiUrl, entidade);
+  }
+
+  updateEntidade(entidade: any, id: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, entidade);
+  }
+
+  getRegionais(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrlBase}/regionais`);
+  }
+
+  getEspecialidades(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrlBase}/especialidades`);
   }
 }
