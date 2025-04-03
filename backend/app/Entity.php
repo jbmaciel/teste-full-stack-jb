@@ -20,4 +20,8 @@ class Entity extends Model
     {
         return $this->belongsTo(Regional::class, 'regional', 'id');
     }
+
+    public function medicalSpecialties() {
+        return $this->belongsToMany(MedicalSpecialties::class, 'entity_medical_specialty');
+    }
 }

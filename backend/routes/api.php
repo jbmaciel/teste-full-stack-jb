@@ -22,3 +22,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::resource('entidades', 'Api\EntityController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
 Route::resource('regionais', 'Api\RegionalController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+
+Route::resource('especialidades', 'Api\MedicalSpecialtyController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
