@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EntidadesFormComponent } from './entidades-form.component';
+import { DropdownComponent } from './dropdown.component';
 
-describe('EntidadesFormComponent', () => {
-  let component: EntidadesFormComponent;
-  let fixture: ComponentFixture<EntidadesFormComponent>;
+describe('DropdownComponent', () => {
+  let component: DropdownComponent;
+  let fixture: ComponentFixture<DropdownComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EntidadesFormComponent]
+      imports: [DropdownComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EntidadesFormComponent);
+    fixture = TestBed.createComponent(DropdownComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

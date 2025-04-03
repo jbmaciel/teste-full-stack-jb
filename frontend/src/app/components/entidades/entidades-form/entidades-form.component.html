@@ -1,1 +1,81 @@
-<p>entidades-form works!</p>
+<div class="w-full h-full bg-base-50 z-999 flex items-center justify-center" *ngIf="loading">
+  <span class="loading loading-infinity loading-xl text-primary"></span>
+</div>
+
+
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-semibold mb-4">Criar Entidade</h2>
+  </div>
+
+  <form [formGroup]="entidadeForm" (ngSubmit)="salvar()">
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Razão social -->
+      <fieldset class="fieldset">
+        <input type="text" formControlName="razao_social" placeholder="Razão Social"
+          class="input input-bordered w-full" />
+        <p *ngIf="submitted && entidadeForm.controls['razao_social'].invalid" class="fieldset-label text-red-500">
+          Razão Social é obrigatório.</p>
+      </fieldset>
+
+
+      <!-- Nome Fantasia -->
+      <fieldset class="fieldset">
+        <input type="text" formControlName="nome_fantasia" placeholder="Nome Fantasia"
+          class="input input-bordered w-full" />
+        <p *ngIf="submitted && entidadeForm.controls['nome_fantasia'].invalid" class="fieldset-label text-red-500">
+          Nome Fantasia é obrigatório.</p>
+      </fieldset>
+      <!-- CNPJ -->
+      <fieldset class="fieldset">
+        <input placeholder="00.000.000/0001-00" mask="00.000.000/0000-00" type="text" formControlName="cnpj"
+          placeholder="CNPJ" class="input input-bordered w-full" />
+        <p *ngIf="submitted && entidadeForm.controls['cnpj'].invalid" class="fieldset-label text-red-500">
+          CNPJ é obrigatório.</p>
+      </fieldset>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <!-- Região -->
+      <fieldset class="fieldset">
+        <select formControlName="regional" class="select select-bordered w-full">
+          <option value="" disabled selected>Selecione a Regional</option>
+          <option *ngFor="let reg of regionais" [value]="reg.id">{{ reg.nome }}</option>
+        </select>
+        <p *ngIf="submitted && entidadeForm.controls['regional'].invalid" class="fieldset-label text-red-500">
+          Regional é obrigatório.</p>
+      </fieldset>
+      <!-- Especialidades -->
+      <fieldset class="fieldset">
+        <app-dropdown [options]="especialidades" [minSelection]="5" (selectionChange)="onSelectionChange($event)" />
+        <p *ngIf="submitted && entidadeForm.controls['especialidades_medicas'].invalid" class="fieldset-label text-red-500">
+          Selecione pelo menos 5 especialidades</p>
+      </fieldset>
+    </div>
+
+    <div class="flex items-center justify-between gap-4 mt-4">
+      <!-- Inauguração -->
+      <fieldset class="fieldset">
+        <input type="date" formControlName="data_inauguracao" class="input input-bordered" />
+        <p *ngIf="submitted && entidadeForm.controls['data_inauguracao'].invalid" class="fieldset-label text-red-500">
+          A data de inauguração é obrigatória</p>
+      </fieldset>
+      <!-- Status -->
+      <label class="flex items-center gap-2">
+        <span>Ativa</span>
+        <input type="checkbox" formControlName="ativa" checked="checked" class="checkbox checkbox-xl" />
+      </label>
+    </div>
+
+    <div class="flex justify-end gap-4 mt-6">
+      <!-- [disabled]="!entidadeForm.valid" -->
+      <button type="button" class="btn btn-outline" (click)="cancelar()">Cancelar</button>
+
+      <button (click)="salvar()" class="btn btn-primary">
+        Salvar
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,21 @@
+<div class="">
+  <div class="">
+    <button
+    type="button"
+      class="select select-bordered w-full"
+      (click)="toggleDropdown()">
+      {{ buttonLabel }}
+    </button>
+
+    <ul *ngIf="isOpen" class="mt-2 absolute border rounded shadow bg-white z-10 w-sm">
+      <li *ngFor="let option of options" class="p-2 hover:bg-gray-100 flex items-center">
+        <input
+          type="checkbox"
+          [checked]="selectedIds.includes(option)"
+          (change)="toggleSelection(option)"
+          class="mr-2" />
+        {{ option.nome }}
+      </li>
+    </ul>
+  </div>
+</div>
