@@ -12,8 +12,8 @@ export class AuthService {
   user$ = this.userSubject.asObservable();
 
   private grant_type = 'password';
-  private client_id = '2'; // ID do cliente OAuth2
-  private client_secret = 'dSpWb3X9Mb8hDXCY81HAViiHBlU6TbyxjFXQFDxc'; // Segredo do cliente OAuth2
+  private client_id = ''; // ID do cliente OAuth2
+  private client_secret = ''; // Segredo do cliente OAuth2
   private scope = '*'; // Escopo de acesso (opcional)
 
   constructor(private http: HttpClient) { }
