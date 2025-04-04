@@ -39,6 +39,10 @@ export class EntidadesService {
     return this.http.put(`${this.apiUrl}/${id}`, entidade);
   }
 
+  deleteEntidade(id: any): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
   getRegionais(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrlBase}/regionais`);
   }

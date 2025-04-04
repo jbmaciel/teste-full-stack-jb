@@ -20,6 +20,8 @@ export class EntidadesFormComponent implements OnInit {
   isEditMode = false;
   loading = true;
   submitted = false;
+  entidade_id = this.route.snapshot.paramMap.get('id');
+  mensagemSucesso = false;
 
 
   constructor(
@@ -87,6 +89,7 @@ export class EntidadesFormComponent implements OnInit {
       this.entidadeForm.patchValue(response);
       this.entidadeForm.patchValue({
         data_inauguracao: response.data_inauguracao ? response.data_inauguracao.split(' ')[0] : null,
+        regional: response.regional.id,
       });
       this.loading = false; //Libera a tela para interações
     });
@@ -102,17 +105,39 @@ export class EntidadesFormComponent implements OnInit {
 
     if (this.isEditMode) {
       const entidade_id = this.route.snapshot.paramMap.get('id');
-      this.entidadesService.updateEntidade(this.entidadeForm.value, entidade_id).subscribe(() => {
-        alert('Entidade atualizada com sucesso!');
-        this.router.navigate(['/entidades']);
+      this.entidadesService.updateEntidade(this.entidadeForm.value, entidade_id).subscribe((response) => {
+        if (response.id) {
+          this.mensagemSucesso = true;
+
+          setTimeout(() => {
+            this.router.navigate(['/entidades', response.id]);
+          }, 3000);
+        }
       });
 
     } else {
-      this.entidadesService.createEntidade(this.entidadeForm.value).subscribe(() => {
-        console.log(this.entidadeForm.value);
-        alert('Entidade criada com sucesso!');
-        console.log(this.entidadeForm.value);
-        this.router.navigate(['/entidades']);
+      this.entidadesService.createEntidade(this.entidadeForm.value).subscribe((response) => {
+        if (response.id) {
+          this.mensagemSucesso = true;
+          setTimeout(() => {
+            this.router.navigate(['/entidades', response.id]);
+          }, 3000);
+        }
+      });
+    }
+  }
+
+  excluir(id: any) {
+    if (confirm('Tem certeza que deseja excluir esta entidade?')) {
+      this.entidadesService.deleteEntidade(this.entidade_id).subscribe({
+        next: () => {
+          alert('Entidade excluída com sucesso!');
+          this.router.navigate(['/entidades']); // Redireciona após a exclusão
+        },
+        error: (err) => {
+          console.error('Erro ao excluir:', err);
+          alert('Erro ao excluir a entidade.');
+        },
       });
     }
   }

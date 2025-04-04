@@ -2,13 +2,14 @@
   <span class="loading loading-infinity loading-xl text-primary"></span>
 </div>
 
-
 <div class="max-w-3xl mx-auto px-4 sm:px-6 py-6 bg-white rounded-lg shadow-md">
-
   <div class="flex justify-between items-center mb-4">
-    <h2 class="text-2xl font-semibold">Criar Entidade</h2>
+    <div class="">
+      <h2 *ngIf="isEditMode" class="text-2xl font-semibold">Editar Entidade</h2>
+      <h2 *ngIf="!isEditMode" class="text-2xl font-semibold">Criar Entidade</h2>
+    </div>
+    <button (click)="excluir(entidade_id)" class="btn btn-error">Excluir</button>
   </div>
-
   <form [formGroup]="entidadeForm" (ngSubmit)="salvar()">
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -16,16 +17,16 @@
       <fieldset class="fieldset">
         <input type="text" formControlName="razao_social" placeholder="Razão Social"
           class="input input-bordered w-full" />
-        <p *ngIf="submitted && entidadeForm.controls['razao_social'].invalid" class="fieldset-label text-red-500 text-sm">
+        <p *ngIf="submitted && entidadeForm.controls['razao_social'].invalid"
+          class="fieldset-label text-red-500 text-sm">
           Razão Social é obrigatória.</p>
       </fieldset>
-
-
       <!-- Nome Fantasia -->
       <fieldset class="fieldset">
         <input type="text" formControlName="nome_fantasia" placeholder="Nome Fantasia"
           class="input input-bordered w-full" />
-        <p *ngIf="submitted && entidadeForm.controls['nome_fantasia'].invalid" class="fieldset-label text-red-500 text-sm">
+        <p *ngIf="submitted && entidadeForm.controls['nome_fantasia'].invalid"
+          class="fieldset-label text-red-500 text-sm">
           Nome Fantasia é obrigatório.</p>
       </fieldset>
       <!-- CNPJ -->
@@ -36,9 +37,8 @@
           CNPJ é obrigatório.</p>
       </fieldset>
     </div>
-
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-            <!-- Região -->
+      <!-- Região -->
       <fieldset class="fieldset">
         <select formControlName="regional" class="select select-bordered w-full">
           <option value="" disabled selected>Selecione a Regional</option>
@@ -70,9 +70,24 @@
       </label>
     </div>
 
-    <div class="flex flex-col sm:flex-row justify-end gap-4 mt-6">
+    <div class="flex flex-col sm:flex-row justify-end gap-4 mt-32">
       <button type="button" class="btn btn-outline w-full sm:w-auto" (click)="cancelar()">Cancelar</button>
-      <button class="btn btn-primary w-full sm:w-auto" (click)="salvar()">Salvar</button>
+      <button class="btn btn-primary w-full sm:w-auto" (click)="salvar()">
+        <span *ngIf="!isEditMode">Salvar</span>
+        <span *ngIf="isEditMode">Editar</span>
+      </button>
     </div>
   </form>
+
+  <div *ngIf="mensagemSucesso" class="items-center flex justify-center">
+    <div role="alert" class="alert alert-success mt-8 w-1/2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span *ngIf="!isEditMode">Entidade criada com sucesso</span>
+      <span *ngIf="isEditMode" >Entidade editada com sucesso</span>
+      <button class="btn btn-sm">OK</button>
+    </div>
+  </div>
+  
 </div>

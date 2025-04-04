@@ -1,0 +1,74 @@
+<div class="container mx-auto p-6">
+
+  <div class="flex justify-between pb-12">
+    <h2 class="text-2xl font-bold">Visualizar entidade</h2>
+    <button (click)="editar()" class="btn btn-primary">Editar</button>
+  </div>
+
+  <div class="grid grid-cols-3 gap-8 mt-4">
+    <div>
+      <strong>Nome fantasia</strong>
+      <p>{{ entidade?.nome_fantasia }}</p>
+    </div>
+
+    <div>
+      <strong>Razão social</strong>
+      <p>{{ entidade?.razao_social }}</p>
+    </div>
+
+    <div>
+      <strong>CNPJ</strong>
+      <p>{{ entidade?.cnpj | cnpj }}</p>
+    </div>
+
+    <div>
+      <strong>Especialidades</strong>
+      <p>
+        <span *ngFor="let especialidade of entidade?.medical_specialties.slice(0,5)" class="badge">
+          {{ especialidade.nome }}
+        </span>
+        <span *ngIf="entidade?.medical_specialties?.length > 5">
+          <button class="btn btn-sm btn-info" onclick="m_specialties.showModal()">
+           + {{ entidade?.medical_specialties?.length - 5 }}
+
+          </button>
+          <dialog id="m_specialties" class="modal">
+            <div class="modal-box">
+              <h3 class="text-lg font-bold">Especialidades Médicas</h3>
+              <span *ngFor="let especialidade of entidade?.medical_specialties"
+                class="badge badge-lg  badge-outline badge-primary m-1">{{ especialidade.nome }}</span>
+              <div class="modal-action">
+                <form method="dialog">
+                  <!-- if there is a button in form, it will close the modal -->
+                  <button class="btn">Fechar</button>
+                </form>
+              </div>
+            </div>
+          </dialog>
+        </span>
+        <!-- <ng-container *ngFor="let esp of entidade?.medical_specialties; let i = index; let last = last">
+          {{ esp.nome }}<span *ngIf="!last">, </span>
+        </ng-container> -->
+      </p>
+    </div>
+
+    <div>
+      <strong>Regional</strong>
+      <p>{{ entidade?.regional?.nome }}</p>
+    </div>
+
+    <div>
+      <strong>Data inauguração</strong>
+      <p>{{ entidade?.data_inauguracao | date: 'dd/MM/yyyy' }}</p>
+    </div>
+
+    <div>
+      <strong>Ativo</strong>
+      <p>{{ entidade?.ativa ? 'Sim' : 'Não' }}</p>
+    </div>
+  </div>
+
+  <div class="mt-8 justify-end flex">
+    <button (click)="voltar()" class="btn btn-secondary btn-outline">Voltar</button>
+  </div>
+</div>
