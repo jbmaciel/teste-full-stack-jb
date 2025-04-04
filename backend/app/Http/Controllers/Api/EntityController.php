@@ -77,7 +77,7 @@ class EntityController extends Controller
      */
     public function show($id)
     {
-        $entidade = Entity::with('medicalSpecialties')->find($id);
+        $entidade = Entity::with('medicalSpecialties')->with('regional')->find($id);
         // Article::with('category')->get()->find($ids);
 
         if (!$entidade) {
