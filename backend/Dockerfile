@@ -1,34 +1,32 @@
 FROM php:7.0-fpm-alpine
 
-# Instalando dependências
+# Instalando dependências do sistema
 RUN apk update && apk add --no-cache \
-    zip unzip nodejs npm curl git libpng-dev libxml2-dev oniguruma-dev libmcrypt-dev
+    zip unzip curl git libpng-dev libxml2-dev oniguruma-dev bash \
+    nodejs
 
-# Instalando extensões PHP
-RUN docker-php-ext-install pdo pdo_mysql mbstring mcrypt gd
-    
-# Limpeza de cache
-RUN rm -rf /var/lib/apt/lists/*
+# Instalando extensões PHP necessárias
+RUN docker-php-ext-install pdo pdo_mysql mbstring gd
 
-# Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --2.2
-# Copia apenas os arquivos do Composer para otimizar cache
+# Instalando Composer
+COPY --from=composer:2.2 /usr/bin/composer /usr/local/bin/composer
 
-# Mover o Composer para o diretório correto
-RUN mv composer.phar /usr/local/bin/composer
-
+# Definindo diretório de trabalho
 WORKDIR /var/www
 
+# Copia apenas arquivos essenciais para cache eficiente
+COPY composer.json composer.lock ./
+
+# Instalando dependências do PHP antes de copiar todo o código
+# RUN composer install
+
+# Copiando arquivos do projeto
 COPY . .
 
+# Permissões para diretórios do Laravel
 RUN chmod -R 775 storage bootstrap/cache
 
-RUN composer install --no-interaction --optimize-autoloader
-
-# Instalar as dependências do Node.js (compilar os assets)
-RUN npm install
-
-# Compilar os assets
-RUN npm run dev
+# Instalando dependências do Node.js (compilar assets)
+# RUN npm install && npm run production
 
 CMD ["php-fpm"]
