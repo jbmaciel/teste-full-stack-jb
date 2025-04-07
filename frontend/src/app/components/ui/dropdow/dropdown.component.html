@@ -1,11 +1,12 @@
 <div class="">
   <div class="">
     <button
-    type="button"
-      class="select select-bordered w-full"
-      (click)="toggleDropdown()">
-      {{ buttonLabel }}
-    </button>
+    class="w-full text-left px-4 py-2 border border-gray-300 rounded-md bg-white shadow-sm 
+           whitespace-normal break-words"
+    (click)="toggleDropdown()"
+  >
+    {{ buttonLabel }}
+  </button>
 
     <ul *ngIf="isOpen" class="mt-2 absolute border rounded shadow bg-white z-10 w-sm">
       <li *ngFor="let option of options" class="p-2 hover:bg-gray-100 flex items-center">
