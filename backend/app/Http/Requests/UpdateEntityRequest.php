@@ -29,7 +29,7 @@ class UpdateEntityRequest extends FormRequest
             'cnpj' => 'sometimes|string|max:14',
             'regional' => 'sometimes|string|exists:regionals,id',
             'data_inauguracao' => 'sometimes|date',
-            'ativa' => 'sometimes|in:true,false,1,0,"1","0"',
+            'ativa' => 'nullable|boolean',
             'especialidades_medicas' => 'array',
             'especialidades_medicas.*' => 'exists:medical_specialties,id',
         ];
