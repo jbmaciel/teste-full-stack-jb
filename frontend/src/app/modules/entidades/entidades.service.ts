@@ -31,7 +31,6 @@ export class EntidadesService {
   }
 
   createEntidade(entidade:any): Observable<any> {
-    console.log(entidade);
     return this.http.post(this.apiUrl, entidade);
   }
 

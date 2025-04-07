@@ -22,7 +22,6 @@ export class DropdownComponent {
   constructor(private eRef: ElementRef) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.selected);
     if (changes['selected'] && this.selected) {
       this.selectedIds = [...this.selected];
       this.selectedNames = this.options
