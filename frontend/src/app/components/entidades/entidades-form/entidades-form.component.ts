@@ -126,7 +126,7 @@ export class EntidadesFormComponent implements OnInit {
           if (error.status === 422 && typeof error.error === 'object') {
             const mensagens = Object.values(error.error)
               .flat()
-              .join('\n'); // ou use '<br>' se quiser HTML
+              .join('\n');
 
             this.erroMensagem = mensagens;
           } else {
