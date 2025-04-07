@@ -36,10 +36,11 @@ O ambiente é composto por três serviços Docker: `frontend`, `backend` e `db`.
 
 ### Passos:
 
-1. Clone o repositório:
+1. Clone o repositório e faça checkout na branch develop:
    ```bash
    git clone https://github.com/jbmaciel/teste-full-stack-jb
    cd teste-full-stack-jb
+   git checkout develop
 
 2. Crie um .env na raiz do repositório:
 
