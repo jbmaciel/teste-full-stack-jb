@@ -80,6 +80,8 @@ O ambiente é composto por três serviços Docker: `frontend`, `backend` e `db`.
 # Endereços
 Backend: http://localhost:8000
 
+Para registrar um usuário acesse: http://localhost:8000/register
+
 Frontend: http://localhost
 
 # Doc API
