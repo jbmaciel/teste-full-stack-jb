@@ -80,3 +80,6 @@ O ambiente é composto por três serviços Docker: `frontend`, `backend` e `db`.
 Backend: http://localhost:8000
 
 Frontend: http://localhost
+
+# Doc API
+Para testes na api deixei um arquivo "Insominia-2025-04-06.json" na raiz do repositório para ser importado no Insominia. 
