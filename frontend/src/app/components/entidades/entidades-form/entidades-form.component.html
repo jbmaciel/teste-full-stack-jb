@@ -8,7 +8,7 @@
       <h2 *ngIf="isEditMode" class="text-2xl font-semibold">Editar Entidade</h2>
       <h2 *ngIf="!isEditMode" class="text-2xl font-semibold">Criar Entidade</h2>
     </div>
-    <button (click)="excluir(entidade_id)" class="btn btn-error">Excluir</button>
+    <button type="button" (click)="excluir(entidade_id)" class="btn btn-error">Excluir</button>
   </div>
   <form [formGroup]="entidadeForm" (ngSubmit)="salvar()">
 
@@ -49,8 +49,8 @@
       </fieldset>
       <!-- Especialidades -->
       <fieldset class="fieldset">
-        <app-dropdown   [selected]="entidadeForm.get('especialidades_medicas')?.value"
-        [options]="especialidades" [minSelection]="5" (selectionChange)="onSelectionChange($event)" />
+        <app-dropdown [selected]="entidadeForm.get('especialidades_medicas')?.value" [options]="especialidades"
+          [minSelection]="5" (selectionChange)="onSelectionChange($event)" />
         <p *ngIf="submitted && entidadeForm.controls['especialidades_medicas'].invalid" class="text-red-500 text-sm">
           Selecione pelo menos 5 especialidades</p>
       </fieldset>
@@ -73,7 +73,7 @@
 
     <div class="flex flex-col sm:flex-row justify-end gap-4 mt-32">
       <button type="button" class="btn btn-outline w-full sm:w-auto" (click)="cancelar()">Cancelar</button>
-      <button class="btn btn-primary w-full sm:w-auto" (click)="salvar()">
+      <button type="button" class="btn btn-primary w-full sm:w-auto" (click)="salvar()">
         <span *ngIf="!isEditMode">Salvar</span>
         <span *ngIf="isEditMode">Editar</span>
       </button>
@@ -83,12 +83,18 @@
   <div *ngIf="mensagemSucesso" class="items-center flex justify-center">
     <div role="alert" class="alert alert-success mt-8 w-1/2">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
       <span *ngIf="!isEditMode">Entidade criada com sucesso</span>
-      <span *ngIf="isEditMode" >Entidade editada com sucesso</span>
-      <button class="btn btn-sm">OK</button>
+      <span *ngIf="isEditMode">Entidade editada com sucesso</span>
+      <button type="button" class="btn btn-sm">OK</button>
     </div>
   </div>
-  
+
+  <app-modal *ngIf="mostrarErro" 
+  [titulo]="erroTitulo" [mensagem]="erroMensagem" [status]="erroStatus"
+    [modalId]="'erro-modal'" (fechar)="mostrarErro = false">
+  </app-modal>
+  <label for="erro-modal" class="hidden" #abrirModal></label>
 </div>

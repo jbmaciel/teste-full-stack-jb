@@ -5,11 +5,12 @@ import { EntidadesService } from '../../../modules/entidades/entidades.service';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective } from 'ngx-mask';
 import { DropdownComponent } from '../../ui/dropdow/dropdown.component';
+import { ModalComponent } from '../../ui/modal/modal.component';
 
 @Component({
   selector: 'app-entidades-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NgxMaskDirective, DropdownComponent],
+  imports: [CommonModule, ReactiveFormsModule, NgxMaskDirective, DropdownComponent, ModalComponent],
   templateUrl: './entidades-form.component.html',
   styleUrl: './entidades-form.component.css'
 })
@@ -22,6 +23,11 @@ export class EntidadesFormComponent implements OnInit {
   submitted = false;
   entidade_id = this.route.snapshot.paramMap.get('id');
   mensagemSucesso = false;
+  mostrarErro = false;
+  erroTitulo = 'Erro ao salvar';
+  erroMensagem = '';
+  erroStatus = '';
+
 
 
   constructor(
@@ -81,7 +87,7 @@ export class EntidadesFormComponent implements OnInit {
 
   onSelectionChange(selectedIds: number[]) {
     this.entidadeForm.get('especialidades_medicas')?.setValue(selectedIds);
-    }
+  }
 
   obterEntidade(id: number) {
     this.entidadesService.getEntidadeById(id).subscribe(response => {
@@ -97,30 +103,62 @@ export class EntidadesFormComponent implements OnInit {
 
   salvar() {
     this.submitted = true;
-
     if (this.entidadeForm.invalid) {
       return; // Se for inválido, interrompe a submissão
     }
 
     if (this.isEditMode) {
       const entidade_id = this.route.snapshot.paramMap.get('id');
-      this.entidadesService.updateEntidade(this.entidadeForm.value, entidade_id).subscribe((response) => {
-        if (response.id) {
-          this.mensagemSucesso = true;
+      this.entidadesService.updateEntidade(this.entidadeForm.value, entidade_id).subscribe({
+        next: (response) => {
+          if (response.id) {
+            console.log("Retorno:", response);
+            this.mensagemSucesso = true;
+            setTimeout(() => {
+              this.router.navigate(['/entidades', response.id]);
+            }, 1000);
+          }
+          console.log("Salvando:", response);
+        },
+        error: (error) => {
+          this.mostrarErro = true;
+          this.erroStatus = error.status;
+          if (error.status === 422 && typeof error.error === 'object') {
+            const mensagens = Object.values(error.error)
+              .flat()
+              .join('\n'); // ou use '<br>' se quiser HTML
 
-          setTimeout(() => {
-            this.router.navigate(['/entidades', response.id]);
-          }, 3000);
+            this.erroMensagem = mensagens;
+          } else {
+            this.erroMensagem = 'Erro inesperado: ' + error.message;
+          }
+          console.error('Erro ao criar entidade:', error);
         }
-      });
-
+      })
     } else {
-      this.entidadesService.createEntidade(this.entidadeForm.value).subscribe((response) => {
-        if (response.id) {
-          this.mensagemSucesso = true;
-          setTimeout(() => {
-            this.router.navigate(['/entidades', response.id]);
-          }, 3000);
+      this.entidadesService.createEntidade(this.entidadeForm.value).subscribe({
+        next: (response) => {
+          if (response.status === 201) {
+            this.mensagemSucesso = true;
+            setTimeout(() => {
+              this.router.navigate(['/entidades', response.id]);
+            }, 1000);
+          }
+        },
+        error: (error) => {
+          console.error('Erro ao criar entidade:', error);
+          this.mostrarErro = true;
+          this.erroStatus = error.status;
+          if (error.status === 422 && typeof error.error === 'object') {
+            const mensagens = Object.values(error.error)
+              .flat()
+              .join('\n'); // ou use '<br>' se quiser HTML
+
+            this.erroMensagem = mensagens;
+          } else {
+            this.erroMensagem = 'Erro inesperado: ' + error.message;
+          }
+          console.error('Erro ao criar entidade:', error);
         }
       });
     }

@@ -1,0 +1,11 @@
+<input type="checkbox" checked="true" [id]="modalId" class="modal-toggle" />
+<div class="modal" role="dialog">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">{{ titulo }}</h3>
+    <p class="py-4">Status: {{ status }}</p>
+    <p class="py-4">{{ mensagem }}</p>
+    <div class="modal-action">
+      <label [for]="modalId" class="btn" (click)="onFechar()">Fechar</label>
+    </div>
+  </div>
+</div>
