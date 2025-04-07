@@ -81,8 +81,7 @@ export class EntidadesFormComponent implements OnInit {
 
   onSelectionChange(selectedIds: number[]) {
     this.entidadeForm.get('especialidades_medicas')?.setValue(selectedIds);
-    console.log('Especialidades selecionadas:', selectedIds);
-  }
+    }
 
   obterEntidade(id: number) {
     this.entidadesService.getEntidadeById(id).subscribe(response => {
@@ -90,6 +89,7 @@ export class EntidadesFormComponent implements OnInit {
       this.entidadeForm.patchValue({
         data_inauguracao: response.data_inauguracao ? response.data_inauguracao.split(' ')[0] : null,
         regional: response.regional.id,
+        especialidades_medicas: response.medical_specialties.map((e: any) => e.id),
       });
       this.loading = false; //Libera a tela para interações
     });
@@ -99,7 +99,6 @@ export class EntidadesFormComponent implements OnInit {
     this.submitted = true;
 
     if (this.entidadeForm.invalid) {
-      console.log('Formulário inválido:', this.entidadeForm.errors);
       return; // Se for inválido, interrompe a submissão
     }
 

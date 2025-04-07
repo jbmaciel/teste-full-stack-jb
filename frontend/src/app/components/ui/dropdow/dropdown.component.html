@@ -11,7 +11,7 @@
       <li *ngFor="let option of options" class="p-2 hover:bg-gray-100 flex items-center">
         <input
           type="checkbox"
-          [checked]="selectedIds.includes(option)"
+          [checked]="selectedIds.includes(option.id)"
           (change)="toggleSelection(option)"
           class="mr-2" />
         {{ option.nome }}
