@@ -34,4 +34,17 @@ class StoreEntityRequest extends FormRequest
             'especialidades_medicas.*' => 'exists:medical_specialties,id',
         ];
     }
+
+    // Mensagens de erro personalizadas (opcional)
+    public function messages()
+    {
+        return [
+            'razao_social.required' => 'O campo razão social é obrigatório.',
+            'nome_fantasia.required' => 'O campo nome fantasia é obrigatório.',
+            'cnpj.required' => 'O campo cnpj é obrigatório.',
+            'cnpj.unique' => 'Este cnpj já está cadastrado.',
+            'data_inauguracao.required' => 'O campo data de inauguração é obrigatório',
+            'especialidades_medicas.exists' => 'Informe pelo menos 5 especialidades'
+        ];
+    }
 }
