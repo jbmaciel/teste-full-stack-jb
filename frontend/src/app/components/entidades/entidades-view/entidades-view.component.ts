@@ -2,13 +2,12 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EntidadesService } from '../../../modules/entidades/entidades.service';
 import { CommonModule } from '@angular/common';
-import { CnpjPipe } from '../../../shared/cnpj.pipe';
 
 
 @Component({
   selector: 'app-entidades-view',
   standalone: true,
-  imports: [CommonModule, CnpjPipe],
+  imports: [CommonModule],
   templateUrl: './entidades-view.component.html',
   styleUrl: './entidades-view.component.css'
 })
