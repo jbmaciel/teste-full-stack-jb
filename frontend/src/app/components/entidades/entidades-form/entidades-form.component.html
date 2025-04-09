@@ -33,8 +33,9 @@
       <fieldset class="fieldset">
         <input type="text" formControlName="cnpj" placeholder="CNPJ" mask="00.000.000/0000-00"
           class="input input-bordered w-full" />
-        <p *ngIf="submitted && entidadeForm.controls['cnpj'].invalid" class="fieldset-label text-red-500 text-sm">
+        <p *ngIf="submitted && entidadeForm.controls['cnpj']?.hasError('required')" class="fieldset-label text-red-500 text-sm">
           CNPJ é obrigatório.</p>
+          <p class="fieldset-label text-red-500 text-sm" *ngIf="submitted && entidadeForm.controls['cnpj']?.hasError('invalidCNPJ')">CNPJ inválido.</p>
       </fieldset>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">

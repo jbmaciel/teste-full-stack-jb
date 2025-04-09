@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { NgxMaskDirective } from 'ngx-mask';
 import { DropdownComponent } from '../../ui/dropdow/dropdown.component';
 import { ModalComponent } from '../../ui/modal/modal.component';
+import { cnpjValidator } from '../../../shared/cnpj.validator';
 
 @Component({
   selector: 'app-entidades-form',
@@ -55,7 +56,7 @@ export class EntidadesFormComponent implements OnInit {
     this.entidadeForm = this.fb.group({
       nome_fantasia: ['', [Validators.required, Validators.maxLength(255)]],
       razao_social: ['', [Validators.required, Validators.maxLength(255)]],
-      cnpj: ['', [Validators.required, Validators.maxLength(18)]], // Validador customizado
+      cnpj: ['', [Validators.required, Validators.maxLength(18), cnpjValidator()]], // Validador customizado
       regional: ['', [Validators.required]],
       data_inauguracao: ['', [Validators.required]],
       ativa: [true],
@@ -138,7 +139,7 @@ export class EntidadesFormComponent implements OnInit {
     } else {
       this.entidadesService.createEntidade(this.entidadeForm.value).subscribe({
         next: (response) => {
-          if (response.status === 201) {
+          if (response.id) {
             this.mensagemSucesso = true;
             setTimeout(() => {
               this.router.navigate(['/entidades', response.id]);
